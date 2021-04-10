@@ -16,13 +16,15 @@ const exitBtn = document.querySelectorAll(".close");
 const modalElts = document.querySelectorAll(".text-control, .checkbox-input, .checkbox-label, .checkbox2-label, .btn-submit")
 const firstModalEl = modalElts[0];
 const lastModalEl = modalElts[modalElts.length - 1];
+//end modal elements for focus trap
 
 
 
 /////////MODAL ELEMENT////////
 //(OK)modal must contain click and "echap" conditions to exit the window
-//(OK) modal navigable /w tab key
-//must prevent enter key from closing the modal
+//(OK)modal navigable /w tab key
+//(OK)must prevent enter key from closing the modal
+//focus in checkbox, a voir
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
@@ -50,6 +52,7 @@ function escapeEvt(eventkey){
 //navigate through form with tab key (focustrap), enferme le focus tant que la modale est ouverte
 document.addEventListener('keydown', function(eventkey){
   if (eventkey.key === 'Tab') {
+    if (eventkey.shiftKey){
       if (document.activeElement === firstModalEl) {//quand la premiere valeur de la chaine est active, le focus est mis sur la derniere
         lastModalEl.focus();
         eventkey.preventDefault();
@@ -59,6 +62,7 @@ document.addEventListener('keydown', function(eventkey){
         firstModalEl.focus();
         eventkey.preventDefault();
       }
+    }
   }
 })
 
