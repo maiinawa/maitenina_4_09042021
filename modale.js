@@ -8,19 +8,11 @@ function main(){
     }
   }
 
-  ///////// DOM Elements ////////
+  //////////////// DOM Elements //////////////
   const modalbg = document.querySelector(".bground");
   const modalBtn = document.querySelectorAll(".modal-btn");
   const exitBtn = document.querySelectorAll(".close");
   const submitBtn = document.querySelectorAll(".btn-submit");
-
-
-  //focus modal elements for the focus trap
-  const modalElts = document.querySelectorAll(".text-control, .checkbox-input, .checkbox-label, .checkbox2-label, .btn-submit")
-  const firstModalEl = modalElts[0];
-  const lastModalEl = modalElts[modalElts.length - 1];
-  //end modal elements for focus trap
-
 
 
   /////////MODAL ELEMENT////////
@@ -52,6 +44,15 @@ function main(){
     }
   }
 
+
+
+////////////////// FOCUS TRAP ///////////////////
+
+  //modal elements for the focus trap
+  const modalElts = document.querySelectorAll(".text-control, .checkbox-input, .checkbox-label, .checkbox2-label, .btn-submit")
+  const firstModalEl = modalElts[0];
+  const lastModalEl = modalElts[modalElts.length - 1];
+  
   //navigate through form with tab key (focustrap), enferme le focus tant que la modale est ouverte
   document.addEventListener('keydown', function(eventkey){
     if (eventkey.key === 'Tab') {
@@ -68,6 +69,8 @@ function main(){
       }
     }
   })
+//////////////END FOCUS TRAP ///////////////////
+
 
   //prevent enter key from closing the modal element and send the form
   document.addEventListener('keydown', function(eventkey){
@@ -76,46 +79,60 @@ function main(){
     }
   })
 
+  ///////////MESSAGE ERROR OR SUCCESS MODALE//////////////////
+
+  // please fill all the fields
+  // please enter correct information 
+  // your participation has been sent
+
+  /////////END MESSAGE ERROR OR SUCCESS MODALE////////////////
 
 
-  ///////CHECK USER INPUT////////
-  //has the user filled in all required fields?
-  //has the user entered valid text without numbers
-  //has the user entered a number when needed
-  //check end of the email input
+  ////////////////////CHECK USER INPUT///////////////////////
 
-
-
-  //USER INPUT VALUES
-  let firstName = document.getElementById('first').value;
-  let lastName = document.getElementById('last').value;
-  let userEmail = document.getElementById('email').value;
-
-  let regexOnlyWords =/^[a-zîïéèêëì]+([-'\s][a-zîïéèêëì][a-zéèêëìîï]+)?$/i;
+  //(OK)has the user filled in all required fields?
+  //(OK)has the user entered valid text without numbers
+  //is the birth date complete ?
+  //is the user over 18 to compete ?
+  //(OK)check end of the email input /w ok btn to exit the modal
 
   submitBtn.forEach((btn) => btn.addEventListener("click", checkUserInput));
 
-
   function checkUserInput(event){
-    console.log("ok");
-    if (firstName === ""){
-      event.preventDefault();
-      console.log("empty");
-    }
-    // else if (regexOnlyWords.test(firstName) === false){
-    //   event.preventDefault();
-    //   console.log("nop");
-    // }
+    //USER INPUT VALUES
+    const firstName = document.getElementById('first').value;
+    const lastName = document.getElementById('last').value;
+    const userEmail = document.getElementById('email').value;
 
-    else if (firstName.match(regexOnlyWords)){
-      event.preventDefault();
-      console.log("nop");
+    //CHECK USER INPUT /W REGEX 
+    const REGEX_NAMES =/^[a-zîïéèêëì]+([-'\s][a-zîïéèêëì][a-zéèêëìîï]+)?$/i;
+    const REGEX_MAIL =/^[a-z][a-z0-9-_]+@[a-z]+.[a-z]+$/;
+      
+    if ((firstName === "") || (lastName === "")){
+        event.preventDefault();
+        console.log("empty");
+    } else if ((REGEX_NAMES.test(firstName) === false) || (REGEX_NAMES.test(lastName) === false)){
+        event.preventDefault();
+        console.log("nop");
 
+    } else {
+        event.preventDefault();
+        checkEmail(event);
     }
-    else {
-      event.preventDefault();
-      console.log(firstName)
+    function checkEmail(event){
+      if (userEmail === "") {
+        event.preventDefault();
+        console.log("mail empty");
+      } else if (REGEX_MAIL.test(userEmail) === false){
+        event.preventDefault();
+        console.log("nop email");
+      } else {
+        console.log("okaaaay")
+      }
     }
   }
+
+    //////////////////END CHECK USER INPUT///////////////////////
+
 }
 main();
