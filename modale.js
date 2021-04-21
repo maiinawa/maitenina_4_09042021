@@ -72,7 +72,7 @@ function main(){
 //////////////END FOCUS TRAP ///////////////////
 
 
-  //prevent enter key from closing the modal element and send the form
+  //prevent enter key from closing modal element and send the form
   document.addEventListener('keydown', function(eventkey){
     if (eventkey.key === 'Enter'){
       eventkey.preventDefault();
@@ -92,8 +92,8 @@ function main(){
 
   //(OK)has the user filled in all required fields?
   //(OK)has the user entered valid text without numbers
-  //is the birth date complete ?
-  //is the user over 18 to compete ?
+  //(OK)is the birth date complete ?
+  // check BDay regex
   //(OK)check end of the email input /w ok btn to exit the modal
 
   submitBtn.forEach((btn) => btn.addEventListener("click", checkUserInput));
@@ -103,33 +103,72 @@ function main(){
     const firstName = document.getElementById('first').value;
     const lastName = document.getElementById('last').value;
     const userEmail = document.getElementById('email').value;
+    const userBDay = document.getElementById('birthdate').value;
+    const userParticipation = document.getElementById('quantity').value;
+    const checkboxRequired = document.getElementById('checkbox1');
 
     //CHECK USER INPUT /W REGEX 
     const REGEX_NAMES =/^[a-zîïéèêëì]+([-'\s][a-zîïéèêëì][a-zéèêëìîï]+)?$/i;
     const REGEX_MAIL =/^[a-z][a-z0-9-_]+@[a-z]+.[a-z]+$/;
+    const REGEX_BDAY = /^[0-9]{2}[\/.-][0-9]{2}[\/.-][1-2][0-9]{3}$/;
       
     if ((firstName === "") || (lastName === "")){
         event.preventDefault();
-        console.log("empty");
+        alert("empty");
     } else if ((REGEX_NAMES.test(firstName) === false) || (REGEX_NAMES.test(lastName) === false)){
-        event.preventDefault();
-        console.log("nop");
+      alert("nop");
 
     } else {
-        event.preventDefault();
         checkEmail(event);
     }
+
     function checkEmail(event){
+      event.preventDefault();
       if (userEmail === "") {
-        event.preventDefault();
-        console.log("mail empty");
+        alert("mail empty");
       } else if (REGEX_MAIL.test(userEmail) === false){
-        event.preventDefault();
-        console.log("nop email");
-      } else {
-        console.log("okaaaay")
+        alert("nop email");
+      } else {        
+        checkParticpation(event);
       }
     }
+
+
+    //REVOIR REGEX MAIL APPAREMENT
+
+    // function checkBDay(event){
+    //   if (userBDay === "") {
+    //     event.preventDefault();
+    //     console.log("non birthday")
+    //   } else if (REGEX_BDAY.test(userBDay) === false){
+    //     console.log("non regex birthday")
+    //   } else {
+    //     checkParticpation(event);
+    //   }
+    // }
+
+    function checkParticpation(event){
+      event.preventDefault();
+      if (userParticipation == "") {
+        alert("inserer nombre participation meme zero")
+      } else if (userParticipation < 0 || userParticipation > 10) {
+        alert("impossible ! reessayer")
+      } else {
+        checkCheckboxes(event);
+      }
+    }
+
+    function checkCheckboxes(event){
+      event.preventDefault();
+      if (checkboxRequired.checked === false) {
+        alert("merci de cocher la case obligatoire");
+      } else {
+        event.preventDefault();
+        event.returnValue = true
+      }
+    }
+
+
   }
 
     //////////////////END CHECK USER INPUT///////////////////////
