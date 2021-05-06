@@ -109,7 +109,7 @@ function main(){
   //CHECK USER INPUT /W REGEX
     const REGEX_NAMES =/^[a-zîïéèêëì]+([-'\s][a-zîïéèêëì][a-zéèêëìîï]+)?$/i;
     const REGEX_MAIL =/^[a-z][a-z0-9-_]+@[a-z]+.[a-z]+$/;
-  //   const REGEX_BDAY = /^[0-9]{2}[\/.-][0-9]{2}[\/.-][1-2][0-9]{3}$/;
+    const REGEX_BDAY = /^[1-2][0-9]{3}[-][0-9]{2}[-][0-9]{2}$/;
 
 
   // MSG ERROR
@@ -123,7 +123,7 @@ function main(){
 
 
     if (REGEX_NAMES.test(inputs["first"].value) === false){
-      inputs["first"].style.border = "blue 2px solid";
+      inputs["first"].style.border = "red 2px solid";
       msg = erreur.incorrect;
       formData[0].setAttribute('data-error',msg)
       formData[0].setAttribute('data-error-visible','true')
@@ -158,6 +158,18 @@ function main(){
         formData[2].removeAttribute('data-error-visible');
       }
   
+      if (REGEX_BDAY.test(inputs["birthdate"].value) === false){
+        inputs["birthdate"].style.border = "yellow 2px solid";
+        msg = erreur.incorrect;
+        formData[3].setAttribute('data-error',msg)
+        formData[3].setAttribute('data-error-visible','true')
+      }
+      else{
+        inputs["birthdate"].style.border = "unset";
+        formData[3].removeAttribute('data-error');
+        formData[3].removeAttribute('data-error-visible');
+      }
+
       if (inputs["checkbox1"].checked === false) {
         msg = erreur.radio
         formData[6].setAttribute('data-error',msg)
@@ -170,6 +182,10 @@ function main(){
       }
 
       if (inputs["quantity"].value > 0) {
+        inputs[4].style.border = "transparent 1px solid";
+        formData[4].removeAttribute('data-error');
+        formData[4].removeAttribute('data-error-visible');
+
         let radios = document.getElementsByName('location');
         let checkRadio = false;
         for (let a = 0; a < radios.length; a++){
@@ -187,7 +203,6 @@ function main(){
           msg = erreur.ville;
           formData[5].setAttribute('data-error',msg)
           formData[5].setAttribute('data-error-visible','true')
-  
           // event.preventDefault();
         }
       }
@@ -207,7 +222,7 @@ function main(){
       } 
 
       else {
-      inputs[i].style.border = "unset";
+      inputs[i].style.border = "transparent 1px solid";
       formData.forEach((div) => div.removeAttribute('data-error'));
       formData.forEach((div) => div.removeAttribute('data-error-visible'));
 
