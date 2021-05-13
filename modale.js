@@ -6,11 +6,16 @@ function main(){
   const exitBtn = document.querySelectorAll("#close");
   const formData = document.querySelectorAll(".formData");
   const burger = document.querySelector(".icon");
-  const form = document.getElementById('form')
-  const btnSubmit = document.querySelector(".btn-submit")
+  const form = document.getElementById('form');
+  const btnSubmit = document.querySelector(".btn-submit");
+  const modalBody = document.querySelector(".modal-body");
+  const btnGo = document.createElement('button');
 
-  // formData.forEach((div) => div.setAttribute('data-error',''));
-  // formData.forEach((div) => div.setAttribute('data-error-visible','false'));
+
+  btnGo.innerHTML ='GO';
+  btnGo.classList.add('btn-go');
+  btnGo.setAttribute('type','button')
+
 
   console.log(formData)
 
@@ -41,6 +46,12 @@ function main(){
   // launch modal form
   function launchModal() {
     modalbg.style.display = "block";
+  }
+  function successModal(){
+    form.style.display= "none";
+    modalBody.innerHTML ="Merci pour votre participation !"
+    modalBody.appendChild(btnGo);
+    btnGo.addEventListener('click', closeModal)
   }
 
   //close modal event /w exitbtn or escape key
@@ -102,7 +113,7 @@ function main(){
   // check BDay regex
   //(OK)check end of the email input /w ok btn to exit the modal
 
-  form.onsubmit = function validate(event){
+  btnSubmit.addEventListener('click',function(event){
 
   const inputs = document.forms["reserve"];
 
@@ -114,6 +125,7 @@ function main(){
 
   // MSG ERROR
     let msg;
+    let formSuccess = false; 
 
     let erreur = {};
     erreur.empty = "Veuillez renseigner ce champ.";
@@ -157,7 +169,7 @@ function main(){
         formData[2].removeAttribute('data-error');
         formData[2].removeAttribute('data-error-visible');
       }
-  
+
       if (REGEX_BDAY.test(inputs["birthdate"].value) === false){
         inputs["birthdate"].style.border = "yellow 2px solid";
         msg = erreur.incorrect;
@@ -213,25 +225,25 @@ function main(){
           msg = erreur.empty
           formData[i].setAttribute('data-error',msg)
           formData[i].setAttribute('data-error-visible','true')
-        }  
+        }
       }
-  
+
       if (msg){
         event.preventDefault();
         return false;
-      } 
-
-      else {
-      inputs[i].style.border = "transparent 1px solid";
-      formData.forEach((div) => div.removeAttribute('data-error'));
-      formData.forEach((div) => div.removeAttribute('data-error-visible'));
-
-      alert('FORMuLAIRE VALIDEE')
       }
 
+      else {
+      // inputs[i].style.border = "transparent 1px solid";
+      formData.forEach((div) => div.removeAttribute('data-error'));
+      formData.forEach((div) => div.removeAttribute('data-error-visible'));
+      formSuccess = true
+      }
 
+      btnGo.addEventListener("click",successModal())
     
-  }
+
+  })
 
 ///////////END CHECK USER INPUT////////////
 
