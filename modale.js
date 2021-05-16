@@ -7,19 +7,36 @@ function main(){
   const formData = document.querySelectorAll(".formData");
   const burger = document.querySelector(".icon");
   const form = document.getElementById('form');
-  const btnSubmit = document.querySelector(".btn-submit");
-  const modalBody = document.querySelector(".modal-body");
+  const modalContainer = document.querySelector(".content");
   const btnGo = document.createElement('button');
+  const radios = document.getElementsByName('location');
+  const labelsRadio = document.getElementsByClassName('checkbox-label')
+  const successModal = document.createElement('div');
+
+// STYLING DOM ELEMENTS
+
+  // sucess modal
+  successModal.classList.add('modal-body');
+  successModal.setAttribute('id','sucessModal');
+  successModal.style.display="none";
+  successModal.style.position="absolute";
+  successModal.style.top=0;
+  successModal.style.transform= "translate(0px, 200px)";
+  successModal.innerHTML ="Merci pour votre participation !";
+  modalContainer.appendChild(successModal);
 
 
+  // sucess modal send form
+  successModal.appendChild(btnGo);
   btnGo.innerHTML ='GO';
   btnGo.classList.add('btn-go');
-  btnGo.setAttribute('type','button')
+  btnGo.setAttribute('type','button');
+  btnGo.style.transform= "translate(10px, 400px)";
+  btnGo.addEventListener('click', sendForm)
 
-
-  console.log(formData)
-
-
+  function sendForm(){
+    form.submit()
+  }
 
   /////////MENU RESPONSIVE////////
   burger.onclick = function editNav() {
@@ -31,8 +48,6 @@ function main(){
     }
   }
   /////FIN MENU RESPONSIVE////////
-
-
 
   /////////MODAL ELEMENT////////
   //(OK)modal must contain click and "echap" conditions to exit the window
@@ -47,11 +62,11 @@ function main(){
   function launchModal() {
     modalbg.style.display = "block";
   }
-  function successModal(){
-    form.style.display= "none";
-    modalBody.innerHTML ="Merci pour votre participation !"
-    modalBody.appendChild(btnGo);
-    btnGo.addEventListener('click', closeModal)
+  function displaySucessModal(){
+    // form.style.display= "none";
+    successModal.style.display = "block";
+    form.style.opacity=0;
+
   }
 
   //close modal event /w exitbtn or escape key
@@ -68,7 +83,6 @@ function main(){
       modalbg.style.display = "none";
     }
   }
-
     //prevent enter key from closing modal element and send the form
     document.addEventListener('keydown', function(eventkey){
       if (eventkey.key === 'Enter'){
@@ -104,7 +118,6 @@ function main(){
   })
 /////////////END FOCUS TRAP ////////////////
 
-
   /////////////CHECK USER INPUT//////////////
 
   //(OK)has the user filled in all required fields?
@@ -113,7 +126,7 @@ function main(){
   // check BDay regex
   //(OK)check end of the email input /w ok btn to exit the modal
 
-  btnSubmit.addEventListener('click',function(event){
+  form.onsubmit = (function(event){
 
   const inputs = document.forms["reserve"];
 
@@ -125,7 +138,7 @@ function main(){
 
   // MSG ERROR
     let msg;
-    let formSuccess = false; 
+    let focusedInput;
 
     let erreur = {};
     erreur.empty = "Veuillez renseigner ce champ.";
@@ -133,10 +146,15 @@ function main(){
     erreur.ville = "Veuillez choisir une ville.";
     erreur.radio = "Veuillez accepter les conditions générales.";
 
+    
+
+    event.preventDefault();
+
 
     if (REGEX_NAMES.test(inputs["first"].value) === false){
       inputs["first"].style.border = "red 2px solid";
       msg = erreur.incorrect;
+      focusedInput = formData[0];
       formData[0].setAttribute('data-error',msg)
       formData[0].setAttribute('data-error-visible','true')
       }
@@ -171,7 +189,7 @@ function main(){
       }
 
       if (REGEX_BDAY.test(inputs["birthdate"].value) === false){
-        inputs["birthdate"].style.border = "yellow 2px solid";
+        inputs["birthdate"].style.border = "red 2px solid";
         msg = erreur.incorrect;
         formData[3].setAttribute('data-error',msg)
         formData[3].setAttribute('data-error-visible','true')
@@ -193,13 +211,19 @@ function main(){
         formData[6].removeAttribute('data-error-visible');
       }
 
+      if(inputs["quantity"].value === 0){
+        console.log('red')
+        radios.setAttribute('disabled');
+        labelsRadio.setAttribute('disabled')
+      }
+
       if (inputs["quantity"].value > 0) {
+        let checkRadio = false;
         inputs[4].style.border = "transparent 1px solid";
         formData[4].removeAttribute('data-error');
         formData[4].removeAttribute('data-error-visible');
 
-        let radios = document.getElementsByName('location');
-        let checkRadio = false;
+
         for (let a = 0; a < radios.length; a++){
           if (checkRadio === false){
             if (radios[a].checked === true) {
@@ -215,10 +239,8 @@ function main(){
           msg = erreur.ville;
           formData[5].setAttribute('data-error',msg)
           formData[5].setAttribute('data-error-visible','true')
-          // event.preventDefault();
         }
       }
-
       for (let i = 0; i < inputs.length; i++) {
         if (!inputs[i].value) {
           inputs[i].style.border = "red 2px solid";
@@ -227,22 +249,14 @@ function main(){
           formData[i].setAttribute('data-error-visible','true')
         }
       }
-
       if (msg){
-        event.preventDefault();
         return false;
       }
-
       else {
-      // inputs[i].style.border = "transparent 1px solid";
       formData.forEach((div) => div.removeAttribute('data-error'));
       formData.forEach((div) => div.removeAttribute('data-error-visible'));
-      formSuccess = true
       }
-
-      btnGo.addEventListener("click",successModal())
-    
-
+      displaySucessModal()
   })
 
 ///////////END CHECK USER INPUT////////////
