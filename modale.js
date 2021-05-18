@@ -8,11 +8,74 @@ function main(){
   const burger = document.querySelector(".icon");
   const form = document.getElementById('form');
   const modalContainer = document.querySelector(".content");
-  const btnGo = document.createElement('button');
   const radios = document.getElementsByName('location');
   const labelsRadio = document.getElementsByClassName('checkbox-label')
   const successModal = document.createElement('div');
+  const btnGo = document.createElement('button');
+  const inputs = document.forms["reserve"];
 
+  const REGEX_NAMES =/^[a-zîïéèêëì]+([-'\s][a-zîïéèêëì][a-zéèêëìîï]+)?$/i;
+  const REGEX_MAIL =/^[a-z][a-z0-9-_]+@[a-z]+.[a-z]+$/;
+  const REGEX_BDAY = /^[1-2][0-9]{3}[-][0-9]{2}[-][0-9]{2}$/;
+
+  let msg;
+  let setError = {}
+  setError.input ;
+  setError.data ;
+  let erreur = {};
+  erreur.empty = "Veuillez renseigner ce champ.";
+  erreur.incorrect = "Veuillez renseigner correctement le champ.";
+  erreur.ville = "Veuillez choisir une ville.";
+  erreur.radio = "Veuillez accepter les conditions générales.";
+
+  // checking first name
+  // msg = erreur.incorrect;
+  // setError.data = formData[0];
+  // setError.inputs = inputs["first"];
+  // if (REGEX_NAMES.test(inputs["first"].value) === false){
+  //   setErrStyle(setError);
+  // } else{
+  //   removeErrStyle(setError);
+  // }
+  // if (REGEX_NAMES.test(this.value) === false){
+  //   msg = erreur.incorrect;
+  //   this.style.border = "red 2px solid";
+  //   setError.data.setAttribute('data-error',msg)
+  //   setError.data.setAttribute('data-error-visible','true')
+  // }else {
+  // this.style.border = "transparent 2px solid";
+  // setError.data.removeAttribute('data-error');
+  // setError.data.removeAttribute('data-error-visible');
+  // }
+
+  function setErrorStyle(setError){
+    setError.input.style.border = "red 2px solid";
+    setError.data.setAttribute('data-error',msg)
+    setError.data.setAttribute('data-error-visible','true')
+  }
+
+  function removeErrorStyle(setError){
+    setError.input.style.border = "transparent 2px solid";
+    setError.data.removeAttribute('data-error');
+    setError.data.removeAttribute('data-error-visible');
+    }
+  //     function setErrorStyle(setError){
+  //   setError.inputs.style.border = "red 2px solid";
+  //   setError.data.setAttribute('data-error',msg)
+  //   setError.data.setAttribute('data-error-visible','true')
+  // }
+
+
+  inputs["first"].oninput = function (){
+    setError.data = formData[0];
+    setError.input = this
+    if (REGEX_NAMES.test(this.value) === false){
+      msg = erreur.incorrect;
+      setErrorStyle(setError);
+    }else {
+      removeErrorStyle(setError);
+    }
+  }
 // STYLING DOM ELEMENTS
 
   // sucess modal
@@ -117,6 +180,8 @@ function main(){
     }
   })
 /////////////END FOCUS TRAP ////////////////
+
+
 
   /////////////CHECK USER INPUT//////////////
 
