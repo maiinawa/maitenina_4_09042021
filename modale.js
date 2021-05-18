@@ -9,7 +9,8 @@ function main(){
   const form = document.getElementById('form');
   const modalContainer = document.querySelector(".content");
   const radios = document.getElementsByName('location');
-  const labelsRadio = document.getElementsByClassName('checkbox-label')
+  const spanCheckboxes = document.getElementsByClassName('checkbox-icon')
+
   const successModal = document.createElement('div');
   const btnGo = document.createElement('button');
   const inputs = document.forms["reserve"];
@@ -18,66 +19,13 @@ function main(){
   const REGEX_MAIL =/^[a-z][a-z0-9-_]+@[a-z]+.[a-z]+$/;
   const REGEX_BDAY = /^[1-2][0-9]{3}[-][0-9]{2}[-][0-9]{2}$/;
 
-  let msg;
-  let setError = {}
-  setError.input ;
-  setError.data ;
-  let erreur = {};
-  erreur.empty = "Veuillez renseigner ce champ.";
-  erreur.incorrect = "Veuillez renseigner correctement le champ.";
-  erreur.ville = "Veuillez choisir une ville.";
-  erreur.radio = "Veuillez accepter les conditions générales.";
+  //modal elements for the focus trap
+  const modalElts = document.querySelectorAll(".text-control, .checkbox-input, .checkbox-label, .checkbox2-label, .btn-submit")
+  const firstModalEl = modalElts[0];
+  const lastModalEl = modalElts[modalElts.length - 1];
+  
 
-  // checking first name
-  // msg = erreur.incorrect;
-  // setError.data = formData[0];
-  // setError.inputs = inputs["first"];
-  // if (REGEX_NAMES.test(inputs["first"].value) === false){
-  //   setErrStyle(setError);
-  // } else{
-  //   removeErrStyle(setError);
-  // }
-  // if (REGEX_NAMES.test(this.value) === false){
-  //   msg = erreur.incorrect;
-  //   this.style.border = "red 2px solid";
-  //   setError.data.setAttribute('data-error',msg)
-  //   setError.data.setAttribute('data-error-visible','true')
-  // }else {
-  // this.style.border = "transparent 2px solid";
-  // setError.data.removeAttribute('data-error');
-  // setError.data.removeAttribute('data-error-visible');
-  // }
-
-  function setErrorStyle(setError){
-    setError.input.style.border = "red 2px solid";
-    setError.data.setAttribute('data-error',msg)
-    setError.data.setAttribute('data-error-visible','true')
-  }
-
-  function removeErrorStyle(setError){
-    setError.input.style.border = "transparent 2px solid";
-    setError.data.removeAttribute('data-error');
-    setError.data.removeAttribute('data-error-visible');
-    }
-  //     function setErrorStyle(setError){
-  //   setError.inputs.style.border = "red 2px solid";
-  //   setError.data.setAttribute('data-error',msg)
-  //   setError.data.setAttribute('data-error-visible','true')
-  // }
-
-
-  inputs["first"].oninput = function (){
-    setError.data = formData[0];
-    setError.input = this
-    if (REGEX_NAMES.test(this.value) === false){
-      msg = erreur.incorrect;
-      setErrorStyle(setError);
-    }else {
-      removeErrorStyle(setError);
-    }
-  }
-// STYLING DOM ELEMENTS
-
+  /////////////// STYLING DOM ELEMENTS //////////////
   // sucess modal
   successModal.classList.add('modal-body');
   successModal.setAttribute('id','sucessModal');
@@ -88,7 +36,6 @@ function main(){
   successModal.innerHTML ="Merci pour votre participation !";
   modalContainer.appendChild(successModal);
 
-
   // sucess modal send form
   successModal.appendChild(btnGo);
   btnGo.innerHTML ='GO';
@@ -97,9 +44,19 @@ function main(){
   btnGo.style.transform= "translate(10px, 400px)";
   btnGo.addEventListener('click', sendForm)
 
-  function sendForm(){
-    form.submit()
-  }
+  ////////////// FORM ERROR SETTINGS //////////////
+  let msg;
+
+  let setError = {}
+  setError.input ;
+  setError.data ;
+
+  let erreur = {};
+  erreur.empty = "Veuillez renseigner ce champ.";
+  erreur.incorrect = "Veuillez renseigner correctement le champ.";
+  erreur.ville = "Veuillez choisir une ville.";
+  erreur.radio = "Veuillez accepter les conditions générales.";
+
 
   /////////MENU RESPONSIVE////////
   burger.onclick = function editNav() {
@@ -113,11 +70,6 @@ function main(){
   /////FIN MENU RESPONSIVE////////
 
   /////////MODAL ELEMENT////////
-  //(OK)modal must contain click and "echap" conditions to exit the window
-  //(OK)modal navigable /w tab key
-  //(OK)must prevent enter key from closing the modal
-  //(OK)focus in checkbox, a voir
-
   // launch modal event
   modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 
@@ -126,10 +78,8 @@ function main(){
     modalbg.style.display = "block";
   }
   function displaySucessModal(){
-    // form.style.display= "none";
     successModal.style.display = "block";
     form.style.opacity=0;
-
   }
 
   //close modal event /w exitbtn or escape key
@@ -140,28 +90,22 @@ function main(){
   function closeModal(){
     modalbg.style.display = "none";
   }
+
   //close modal form /w escape key
   function escapeEvt(eventkey){
     if(eventkey.key === "Escape"){
       modalbg.style.display = "none";
     }
   }
-    //prevent enter key from closing modal element and send the form
-    document.addEventListener('keydown', function(eventkey){
-      if (eventkey.key === 'Enter'){
-        eventkey.preventDefault();
-      }
-    })
+  //prevent enter key from closing modal element and send the form
+  document.addEventListener('keydown', function(eventkey){
+    if (eventkey.key === 'Enter'){
+      eventkey.preventDefault();
+    }
+  })
+  ///////// FIN MODAL ELEMENT////////
 
-///////// FIN MODAL ELEMENT////////
-
-
-///////////// FOCUS TRAP //////////
-
-  //modal elements for the focus trap
-  const modalElts = document.querySelectorAll(".text-control, .checkbox-input, .checkbox-label, .checkbox2-label, .btn-submit")
-  const firstModalEl = modalElts[0];
-  const lastModalEl = modalElts[modalElts.length - 1];
+  ///////////// FOCUS TRAP //////////accessibility
 
   //navigate through form with tab key (focustrap), enferme le focus tant que la modale est ouverte
   document.addEventListener('keydown', function(eventkey){
@@ -179,133 +123,119 @@ function main(){
       }
     }
   })
-/////////////END FOCUS TRAP ////////////////
+  /////////////END FOCUS TRAP ////////////////
 
+  function sendForm(){
+    form.submit()
+  }
 
+  function setErrorStyle(setError){
+    setError.input.style.border = "red 2px solid";
+    setError.data.setAttribute('data-error',msg)
+    setError.data.setAttribute('data-error-visible','true')
+  }
 
-  /////////////CHECK USER INPUT//////////////
+  function removeErrorStyle(setError){
+    setError.input.style.border = "transparent 2px solid";
+    setError.data.removeAttribute('data-error');
+    setError.data.removeAttribute('data-error-visible');
+    }
 
-  //(OK)has the user filled in all required fields?
-  //(OK)has the user entered valid text without numbers
-  //(OK)is the birth date complete ?
-  // check BDay regex
-  //(OK)check end of the email input /w ok btn to exit the modal
+  ////////////// CHECK USER INPUTS WHILE TYPING //////////////
+  inputs["first"].oninput = function (){
+    setError.data = formData[0];
+    setError.input = this
+    if (REGEX_NAMES.test(this.value) === false){
+      msg = erreur.incorrect;
+      setErrorStyle(setError);
+    }else {
+      removeErrorStyle(setError);
+    }
+  }
 
-  form.onsubmit = (function(event){
+  inputs["last"].oninput = function (){
+    setError.data = formData[1];
+    setError.input = this
+    if (REGEX_NAMES.test(this.value) === false){
+      msg = erreur.incorrect;
+      setErrorStyle(setError);
+    }else {
+      removeErrorStyle(setError);
+    }
+  }
 
-  const inputs = document.forms["reserve"];
+  inputs["email"].oninput = function (){
+    setError.data = formData[2];
+    setError.input = this
+    if (REGEX_MAIL.test(this.value) === false){
+      msg = erreur.incorrect;
+      setErrorStyle(setError);
+    }else {
+      removeErrorStyle(setError);
+    }
+  }
 
-  //CHECK USER INPUT /W REGEX
-    const REGEX_NAMES =/^[a-zîïéèêëì]+([-'\s][a-zîïéèêëì][a-zéèêëìîï]+)?$/i;
-    const REGEX_MAIL =/^[a-z][a-z0-9-_]+@[a-z]+.[a-z]+$/;
-    const REGEX_BDAY = /^[1-2][0-9]{3}[-][0-9]{2}[-][0-9]{2}$/;
+  inputs["birthdate"].oninput = function (){
+    setError.data = formData[3];
+    setError.input = this
+    if (REGEX_BDAY.test(this.value) === false){
+      msg = erreur.incorrect;
+      setErrorStyle(setError);
+    }else {
+      removeErrorStyle(setError);
+    }
+  }
 
+  inputs["checkbox1"].oninput = function (){
+    setError.data = spanCheckboxes[0];
+    setError.input = this
+    if (this.checked === false){
+      msg = erreur.radio;
+      setErrorStyle(setError);
+    }else {
+      removeErrorStyle(setError);
+    }
+  }
 
-  // MSG ERROR
-    let msg;
-    let focusedInput;
-
-    let erreur = {};
-    erreur.empty = "Veuillez renseigner ce champ.";
-    erreur.incorrect = "Veuillez renseigner correctement le champ.";
-    erreur.ville = "Veuillez choisir une ville.";
-    erreur.radio = "Veuillez accepter les conditions générales.";
-
+  inputs["quantity"].oninput = function (){
+    if (this.value > 0){
+      setError.input = inputs[4];
+      setError.data = formData[4];
+      let checkRadio = false;
+      removeErrorStyle(setError);
     
-
-    event.preventDefault();
-
-
-    if (REGEX_NAMES.test(inputs["first"].value) === false){
-      inputs["first"].style.border = "red 2px solid";
-      msg = erreur.incorrect;
-      focusedInput = formData[0];
-      formData[0].setAttribute('data-error',msg)
-      formData[0].setAttribute('data-error-visible','true')
+      for (let a = 0; a < radios.length; a++){
+        if (checkRadio === false){
+          if (radios[a].checked === true) {
+            checkRadio = true;
+            formData[5].removeAttribute('data-error');
+            formData[5].removeAttribute('data-error-visible');
+            break;
+          }
+        }
       }
-      else{
-        inputs["first"].style.border = "unset";
-        formData[0].removeAttribute('data-error');
-        formData[0].removeAttribute('data-error-visible');
+      if (!checkRadio){
+        msg = erreur.ville;
+        formData[5].setAttribute('data-error',msg)
+        formData[5].setAttribute('data-error-visible','true')
       }
-
-    if (REGEX_NAMES.test(inputs["last"].value) === false) {
-      inputs["last"].style.border = "red 2px solid";
-      msg = erreur.incorrect;
-      formData[1].setAttribute('data-error',msg)
-      formData[1].setAttribute('data-error-visible','true')
     }
-    else{
-      inputs["last"].style.border = "unset";
-      formData[1].removeAttribute('data-error');
-      formData[1].removeAttribute('data-error-visible');
-    }
+  }
+  ////////////// CHECK USER INPUTS WHILE TYPING END//////////////
 
-    if (REGEX_MAIL.test(inputs["email"].value) === false){
-      inputs["email"].style.border = "red 2px solid";
-      msg = erreur.incorrect;
-      formData[2].setAttribute('data-error',msg)
-      formData[2].setAttribute('data-error-visible','true')
-      }
-      else{
-        inputs["email"].style.border = "unset";
-        formData[2].removeAttribute('data-error');
-        formData[2].removeAttribute('data-error-visible');
-      }
 
-      if (REGEX_BDAY.test(inputs["birthdate"].value) === false){
-        inputs["birthdate"].style.border = "red 2px solid";
-        msg = erreur.incorrect;
-        formData[3].setAttribute('data-error',msg)
-        formData[3].setAttribute('data-error-visible','true')
-      }
-      else{
-        inputs["birthdate"].style.border = "unset";
-        formData[3].removeAttribute('data-error');
-        formData[3].removeAttribute('data-error-visible');
-      }
-
+  /////////////CHECK USER INPUT AT SUBMISSION//////////////
+  form.onsubmit = (function(event){
       if (inputs["checkbox1"].checked === false) {
         msg = erreur.radio
         formData[6].setAttribute('data-error',msg)
         formData[6].setAttribute('data-error-visible','true')
-      }
-      else{
+      } else{
         inputs["checkbox1"].style.border = "unset";
         formData[6].removeAttribute('data-error');
         formData[6].removeAttribute('data-error-visible');
       }
 
-      if(inputs["quantity"].value === 0){
-        console.log('red')
-        radios.setAttribute('disabled');
-        labelsRadio.setAttribute('disabled')
-      }
-
-      if (inputs["quantity"].value > 0) {
-        let checkRadio = false;
-        inputs[4].style.border = "transparent 1px solid";
-        formData[4].removeAttribute('data-error');
-        formData[4].removeAttribute('data-error-visible');
-
-
-        for (let a = 0; a < radios.length; a++){
-          if (checkRadio === false){
-            if (radios[a].checked === true) {
-              checkRadio = true;
-              formData[5].removeAttribute('data-error');
-              formData[5].removeAttribute('data-error-visible');
-              break;
-            }
-          }
-        }
-        //!checkradio -> checkradio=false
-        if (!checkRadio){
-          msg = erreur.ville;
-          formData[5].setAttribute('data-error',msg)
-          formData[5].setAttribute('data-error-visible','true')
-        }
-      }
       for (let i = 0; i < inputs.length; i++) {
         if (!inputs[i].value) {
           inputs[i].style.border = "red 2px solid";
@@ -315,11 +245,11 @@ function main(){
         }
       }
       if (msg){
-        return false;
-      }
+    event.preventDefault();
+  }
       else {
-      formData.forEach((div) => div.removeAttribute('data-error'));
-      formData.forEach((div) => div.removeAttribute('data-error-visible'));
+        formData.forEach((div) => div.removeAttribute('data-error'));
+        formData.forEach((div) => div.removeAttribute('data-error-visible'));
       }
       displaySucessModal()
   })
@@ -328,3 +258,4 @@ function main(){
 
 }
 main();
+
