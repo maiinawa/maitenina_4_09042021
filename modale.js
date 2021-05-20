@@ -9,7 +9,6 @@ function main(){
   const form = document.getElementById('form');
   const modalContainer = document.querySelector(".content");
   const radios = document.getElementsByName('location');
-  const spanCheckboxes = document.getElementsByClassName('checkbox-icon')
 
   const successModal = document.createElement('div');
   const btnGo = document.createElement('button');
@@ -47,15 +46,26 @@ function main(){
   ////////////// FORM ERROR SETTINGS //////////////
   let msg;
 
-  let setError = {}
-  setError.input ;
-  setError.data ;
+  const setError = {
+    input : null,
+    data : "",
+  }
+  // setError.input ;
+  // setError.data ;
 
-  let erreur = {};
-  erreur.empty = "Veuillez renseigner ce champ.";
-  erreur.incorrect = "Veuillez renseigner correctement le champ.";
-  erreur.ville = "Veuillez choisir une ville.";
-  erreur.radio = "Veuillez accepter les conditions générales.";
+  const erreur = {
+    empty : "Veuillez renseigner ce champ.",
+    incorrect : "Veuillez renseigner correctement le champ.",
+    ville : "Veuillez choisir une ville.",
+    radio : "Veuillez accepter les conditions générales.",
+    test : "test",
+  };
+  // erreur.empty = "Veuillez renseigner ce champ.";
+  // erreur.incorrect = "Veuillez renseigner correctement le champ.";
+  // erreur.ville = "Veuillez choisir une ville.";
+  // erreur.radio = "Veuillez accepter les conditions générales.";
+  // erreur.test = "test";
+
 
 
   /////////MENU RESPONSIVE////////
@@ -129,11 +139,12 @@ function main(){
     form.submit()
   }
 
+
   function setErrorStyle(setError){
     setError.input.style.border = "red 2px solid";
     setError.data.setAttribute('data-error',msg)
     setError.data.setAttribute('data-error-visible','true')
-    return false
+    // return false
   }
 
   function removeErrorStyle(setError){
@@ -203,18 +214,8 @@ function main(){
     }
   }
 
-  // inputs["checkbox1"].oninput = function (){
-  //   setError.data = spanCheckboxes[0];
-  //   setError.input = this
-  //   if (this.checked === false){
-  //     msg = erreur.radio;
-  //     setErrorStyle(setError);
-  //   }else {
-  //     removeErrorStyle(setError);
-  //   }
-  // }
   inputs["quantity"].oninput = function (){
-    setError.input = inputs[4];
+    setError.input = inputs[4]; // quantity input
     setError.data = formData[4];
     if (!this.value){
       msg = erreur.empty;
@@ -222,11 +223,12 @@ function main(){
     }
 
     else if(this.value === "0"){
-      //delete error msg from quantity form and radio button boxs
+      //delete error msg from quantity input and radio buttons
+        removeErrorStyle(setError); //related to quantity input
+        setError.input = inputs[5];
+        setError.data = formData[5];
         removeErrorStyle(setError);
-        formData[5].removeAttribute('data-error');
-        formData[5].removeAttribute('data-error-visible');
-      for (var g = 0; g< radios.length; g++) {
+      for (var g = 0; g < radios.length; g++) {
         radios[g].disabled = true;
         if (radios[g].checked === true){
           radios[g].checked = false;
@@ -234,63 +236,90 @@ function main(){
       }
     }
 
-    else if (this.value > 0){
-      let checkRadio = false;
-      // radio button form boxs
-      formData[5].removeAttribute('data-error');
-      formData[5].removeAttribute('data-error-visible');
-
-      setError.input = inputs[6];
-      setError.data = formData[6];
-  
-      removeErrorStyle(setError);
+    else {
+      debugger
+      removeErrorStyle(setError); //related to quantity input
+      setError.input = inputs[5];
+      setError.data = formData[5]
+      // removeErrorStyle(setError);
       
-      for (let a = 0; a < radios.length; a++){
-        if (radios[a].disabled === true) {
-          radios[a].disabled = false;
+      let checkRadio = false;
+      
+      radios.forEach(element => {
+        
+        if (element.disabled === true) {
+          element.disabled = false;
         }
-        if (checkRadio === false){
-          if (radios[a].checked === true) {
-            checkRadio = true;
-            removeErrorStyle(setError);
-            break;
+        element.addEventListener('click', (e) => {
+
+          if(e.target.checked){
+            console.log('test')
+            inputs[5].removeAttribute('data-error');
+            inputs[5].removeAttribute('data-error-visible');       
           }
-        }
-      }
-      if (!checkRadio){
-        msg = erreur.ville;
-        setErrorStyle(setError);
-      }
+          else {
+            msg = erreur.ville;
+            inputs[5].setAttribute('data-error',msg)
+            inputs[5].setAttribute('data-error-visible','true')
+                  }
+        })
+
+    });
+      // for (let a = 0; a < radios.length; a++){
+      //   console.log(radios[a].checked)
+      //   if (radios[a].disabled === true) {
+      //     radios[a].disabled = false;
+      //   }
+      //   if (checkRadio === false){
+      //     if (radios[a].checked === true) {
+      //       checkRadio = true;
+      //       removeErrorStyle(setError)
+      //       break;
+      //     }
+      //   }
+      // }
+      // if (!checkRadio){
+      //   msg = erreur.ville;
+      //   setErrorStyle(setError);
+      // }
     }
 
   }
-
-  console.log(msg)
+  console.log(formData)
   ////////////// CHECK USER INPUTS WHILE TYPING END//////////////
 
 
   /////////////CHECK USER INPUT AT SUBMISSION//////////////
-  form.onsubmit = (function(){
+  form.onsubmit = (function(event){
+    event.preventDefault();
+
+    if( (REGEX_NAMES.test(inputs["first"]) === false) || (REGEX_NAMES.test(inputs["last"]) === false) || (REGEX_BDAY.test(inputs["birthdate"]) === false) || (REGEX_MAIL.test(inputs["email"]) === false) || (!inputs["quantity"])){
+      alert('veuillez tout verifier');
+    }
+    setError.input = inputs[6];
+    setError.data = formData[6];
       if (inputs["checkbox1"].checked === false) {
         msg = erreur.radio
-        setError.input = inputs[6];
-        setError.data = formData[6];
+        // setError.input = inputs[6];
+        // setError.data = formData[6];
         setErrorStyle(setError);
-      } else{
-        inputs["checkbox1"].style.border = "unset";
+      }
+      else{
+        // inputs["checkbox1"].style.border = "unset";
         removeErrorStyle(setError);
       }
 
-      // for (let i = 0; i < inputs.length; i++) {
-      //   if (!inputs[i].value) {
-      //     inputs[i].style.border = "red 2px solid";
-      //     msg = erreur.empty
-      //     formData[i].setAttribute('data-error',msg)
-      //     formData[i].setAttribute('data-error-visible','true')
-      //   }
-      // }
+      for (let i = 0; i < inputs.length; i++) {
+        if (!inputs[i].value) {
+          inputs[i].style.border = "red 2px solid";
+          msg = erreur.empty
+          formData[i].setAttribute('data-error',msg)
+          formData[i].setAttribute('data-error-visible','true')
+        }
+      }
       if (msg){
-      return false;
+        console.log('test')
+        return false;
       }
       else {
         formData.forEach((div) => div.removeAttribute('data-error'));
