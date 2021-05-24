@@ -16,6 +16,7 @@ function main(){
 
   const REGEX_NAMES =/^[a-zîïéèêëì]+([-'\s][a-zîïéèêëì][a-zéèêëìîï]+)?$/i;
   const REGEX_MAIL =/^[a-z][a-z0-9-_]+@[a-z]+.[a-z]+$/;
+  // ^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$
   const REGEX_BDAY = /^[1-2][0-9]{3}[-][0-9]{2}[-][0-9]{2}$/;
 
   //modal elements for the focus trap
@@ -126,6 +127,13 @@ function main(){
   inputs["email"].addEventListener('keyup',verifyEmail);
   inputs["birthdate"].addEventListener('change',verifyBirthdate);
   inputs["quantity"].addEventListener('keyup',verifyQuantity);
+  document.getElementById("location1").addEventListener('click', verifyCity)
+  document.getElementById("location2").addEventListener('click', verifyCity)
+  document.getElementById("location3").addEventListener('click', verifyCity)
+  document.getElementById("location4").addEventListener('click', verifyCity)
+  document.getElementById("location5").addEventListener('click', verifyCity)
+  document.getElementById("location6").addEventListener('click', verifyCity)
+
   form.onsubmit = onSubmit;
 
   function sendForm(){
@@ -160,7 +168,7 @@ function main(){
       formData[1].setAttribute('data-error',msg)
       formData[1].setAttribute('data-error-visible','true')
       return false
-    } else if (REGEX_NAMES.test(inputs["first"].value) === false){
+    } else if (REGEX_NAMES.test(inputs["last"].value) === false){
       msg = erreur.incorrect;
       inputs["last"].style.border = "red 2px solid";
       formData[1].setAttribute('data-error',msg)
@@ -215,7 +223,6 @@ function main(){
       return true
     }
   }
-
   function verifyQuantity(){
     if (!inputs["quantity"].value){
       msg = erreur.empty
@@ -246,7 +253,6 @@ function main(){
           }
         }
         verifyCity();
-
       }
   }
 
@@ -263,18 +269,16 @@ function main(){
         }
       }
     }
-    //!checkradio -> checkradio=false
     if (!checkRadio){
       msg = erreur.ville;
       formData[5].setAttribute('data-error',msg)
       formData[5].setAttribute('data-error-visible','true')
       return false
-      // event.preventDefault();
     }
   }
 
   function verifiyConditions(){
-    if (inputs["checkbox1"].checked === false) {
+    if (!inputs["checkbox1"].checked) {
       msg = erreur.radio
       formData[6].setAttribute('data-error',msg)
       formData[6].setAttribute('data-error-visible','true')
@@ -283,6 +287,7 @@ function main(){
     else{
       formData[6].removeAttribute('data-error');
       formData[6].removeAttribute('data-error-visible');
+      return true;
     }
   }
 
@@ -302,9 +307,9 @@ function onSubmit(e){
   okQuantity &&
   okBirthdate &&
   okConditions;
-
-  if (formulaireValide === true){
-    alert('test')
+  // console.log(verifyFirstName()+" "+verifyLastName() +" "+verifyEmail()+" "+verifyQuantity()+" "+verifyBirthdate()+" "+verifiyConditions());
+console.log('test'+!inputs["quantity"].value)
+  if (formulaireValide){
 
     displaySucessModal();
   }
