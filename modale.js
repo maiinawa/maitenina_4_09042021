@@ -45,14 +45,6 @@ function main(){
 
   ////////////// FORM ERROR SETTINGS //////////////
   let msg;
-
-  const setError = {
-    input : null,
-    data : "",
-  }
-  // setError.input ;
-  // setError.data ;
-
   const erreur = {
     empty : "Veuillez renseigner ce champ.",
     incorrect : "Veuillez renseigner correctement le champ.",
@@ -60,13 +52,6 @@ function main(){
     radio : "Veuillez accepter les conditions générales.",
     test : "test",
   };
-  // erreur.empty = "Veuillez renseigner ce champ.";
-  // erreur.incorrect = "Veuillez renseigner correctement le champ.";
-  // erreur.ville = "Veuillez choisir une ville.";
-  // erreur.radio = "Veuillez accepter les conditions générales.";
-  // erreur.test = "test";
-
-
 
   /////////MENU RESPONSIVE////////
   burger.onclick = function editNav() {
@@ -116,7 +101,6 @@ function main(){
   ///////// FIN MODAL ELEMENT////////
 
   ///////////// FOCUS TRAP //////////accessibility
-
   //navigate through form with tab key (focustrap), enferme le focus tant que la modale est ouverte
   document.addEventListener('keydown', function(eventkey){
     if (eventkey.key === 'Tab') {
@@ -135,198 +119,197 @@ function main(){
   })
   /////////////END FOCUS TRAP ////////////////
 
+  ////////////// CHECK USER INPUTS WHILE TYPING //////////////
+
+  inputs["first"].addEventListener('keyup',verifyFirstName);
+  inputs["last"].addEventListener('keyup',verifyLastName);
+  inputs["email"].addEventListener('keyup',verifyEmail);
+  inputs["birthdate"].addEventListener('change',verifyBirthdate);
+  inputs["quantity"].addEventListener('keyup',verifyQuantity);
+  form.onsubmit = onSubmit;
+
   function sendForm(){
     form.submit()
   }
 
-
-  function setErrorStyle(setError){
-    setError.input.style.border = "red 2px solid";
-    setError.data.setAttribute('data-error',msg)
-    setError.data.setAttribute('data-error-visible','true')
-    // return false
-  }
-
-  function removeErrorStyle(setError){
-    setError.input.style.border = "transparent 2px solid";
-    setError.data.removeAttribute('data-error');
-    setError.data.removeAttribute('data-error-visible');
-    }
-
-  ////////////// CHECK USER INPUTS WHILE TYPING //////////////
-  inputs["first"].oninput = function (){
-    setError.data = formData[0];
-    setError.input = this
-    if (!this.value){
-      msg =erreur.empty;
-      setErrorStyle(setError);
-    }
-    else if (REGEX_NAMES.test(this.value) === false){
+  function verifyFirstName(){
+    if (!inputs["first"].value){
+      msg = erreur.empty
+      inputs["first"].style.border = "red 2px solid";
+      formData[0].setAttribute('data-error',msg)
+      formData[0].setAttribute('data-error-visible','true')
+      return false
+    } else if (REGEX_NAMES.test(inputs["first"].value) === false){
       msg = erreur.incorrect;
-      setErrorStyle(setError);
-    }else {
-      removeErrorStyle(setError);
+      inputs["first"].style.border = "red 2px solid";
+      formData[0].setAttribute('data-error',msg)
+      formData[0].setAttribute('data-error-visible','true')
+      return false
+    } else {
+      inputs["first"].style.border = "transparent 2px solid";
+      formData[0].removeAttribute('data-error');
+      formData[0].removeAttribute('data-error-visible');  
+      return true
     }
   }
 
-  inputs["last"].oninput = function (){
-    setError.data = formData[1];
-    setError.input = this
-    if (!this.value){
-      msg =erreur.empty;
-      setErrorStyle(setError);
-    }
-    else if (REGEX_NAMES.test(this.value) === false){
+  function verifyLastName(){
+    if (!inputs["last"].value){
+      msg = erreur.empty
+      inputs["last"].style.border = "red 2px solid";
+      formData[1].setAttribute('data-error',msg)
+      formData[1].setAttribute('data-error-visible','true')
+      return false
+    } else if (REGEX_NAMES.test(inputs["first"].value) === false){
       msg = erreur.incorrect;
-      setErrorStyle(setError);
-    }else {
-      removeErrorStyle(setError);
+      inputs["last"].style.border = "red 2px solid";
+      formData[1].setAttribute('data-error',msg)
+      formData[1].setAttribute('data-error-visible','true')
+      return false
+    } else {
+      inputs["last"].style.border = "transparent 2px solid";
+      formData[1].removeAttribute('data-error');
+      formData[1].removeAttribute('data-error-visible');  
+      return true
     }
   }
 
-  inputs["email"].oninput = function (){
-    setError.data = formData[2];
-    setError.input = this
-    if (!this.value){
-      msg = erreur.empty;
-      setErrorStyle(setError);
-    }
-    else if (REGEX_MAIL.test(this.value) === false){
+  function verifyBirthdate(){
+    if (!inputs["birthdate"].value){
+      msg = erreur.empty
+      inputs["birthdate"].style.border = "red 2px solid";
+      formData[3].setAttribute('data-error',msg)
+      formData[3].setAttribute('data-error-visible','true')
+      return false
+    } else if (REGEX_BDAY.test(inputs["birthdate"].value) === false){
       msg = erreur.incorrect;
-      setErrorStyle(setError);
-    }else {
-      removeErrorStyle(setError);
+      inputs["birthdate"].style.border = "red 2px solid";
+      formData[3].setAttribute('data-error',msg)
+      formData[3].setAttribute('data-error-visible','true')
+      return false
+    } else {
+      inputs["birthdate"].style.border = "transparent 2px solid";
+      formData[3].removeAttribute('data-error');
+      formData[3].removeAttribute('data-error-visible');  
+      return true
     }
   }
 
-  inputs["birthdate"].oninput = function (){
-    setError.data = formData[3];
-    setError.input = this
-    if (!this.value){
-      msg =erreur.empty;
-      setErrorStyle(setError);
-    }
-    else if (REGEX_BDAY.test(this.value) === false){
+  function verifyEmail(){
+    if (!inputs["email"].value){
+      msg = erreur.empty
+      inputs["email"].style.border = "red 2px solid";
+      formData[2].setAttribute('data-error',msg)
+      formData[2].setAttribute('data-error-visible','true')
+      return false
+    } else if (REGEX_MAIL.test(inputs["email"].value) === false){
       msg = erreur.incorrect;
-      setErrorStyle(setError);
-    }else {
-      removeErrorStyle(setError);
+      inputs["email"].style.border = "red 2px solid";
+      formData[2].setAttribute('data-error',msg)
+      formData[2].setAttribute('data-error-visible','true')
+      return false
+    } else {
+      inputs["email"].style.border = "transparent 2px solid";
+      formData[2].removeAttribute('data-error');
+      formData[2].removeAttribute('data-error-visible');  
+      return true
     }
   }
 
-  inputs["quantity"].oninput = function (){
-    setError.input = inputs[4]; // quantity input
-    setError.data = formData[4];
-    if (!this.value){
-      msg = erreur.empty;
-      setErrorStyle(setError);
-    }
+  function verifyQuantity(){
+    if (!inputs["quantity"].value){
+      msg = erreur.empty
+      inputs["quantity"].style.border = "red 2px solid";
+      formData[4].setAttribute('data-error',msg)
+      formData[4].setAttribute('data-error-visible','true')
+      return false
 
-    else if(this.value === "0"){
-      //delete error msg from quantity input and radio buttons
-        removeErrorStyle(setError); //related to quantity input
-        setError.input = inputs[5];
-        setError.data = formData[5];
-        removeErrorStyle(setError);
+    } else if (inputs["quantity"].value === "0"){
+      inputs["quantity"].style.border = "transparent 2px solid";
+      formData[4].removeAttribute('data-error');
+      formData[4].removeAttribute('data-error-visible');
       for (var g = 0; g < radios.length; g++) {
         radios[g].disabled = true;
         if (radios[g].checked === true){
           radios[g].checked = false;
         }
       }
-    }
+      return true
 
-    else {
-      debugger
-      removeErrorStyle(setError); //related to quantity input
-      setError.input = inputs[5];
-      setError.data = formData[5]
-      // removeErrorStyle(setError);
-      
-      let checkRadio = false;
-      
-      radios.forEach(element => {
-        
-        if (element.disabled === true) {
-          element.disabled = false;
-        }
-        element.addEventListener('click', (e) => {
-
-          if(e.target.checked){
-            console.log('test')
-            inputs[5].removeAttribute('data-error');
-            inputs[5].removeAttribute('data-error-visible');       
+    } else if (inputs["quantity"].value > 0){
+      inputs["quantity"].style.border = "transparent 2px solid";
+        formData[4].removeAttribute('data-error');
+        formData[4].removeAttribute('data-error-visible');
+        for (let a = 0; a < radios.length; a++){
+          if (radios[a].disabled === true){
+            radios[a].disabled = false
           }
-          else {
-            msg = erreur.ville;
-            inputs[5].setAttribute('data-error',msg)
-            inputs[5].setAttribute('data-error-visible','true')
-                  }
-        })
+        }
+        verifyCity();
 
-    });
-      // for (let a = 0; a < radios.length; a++){
-      //   console.log(radios[a].checked)
-      //   if (radios[a].disabled === true) {
-      //     radios[a].disabled = false;
-      //   }
-      //   if (checkRadio === false){
-      //     if (radios[a].checked === true) {
-      //       checkRadio = true;
-      //       removeErrorStyle(setError)
-      //       break;
-      //     }
-      //   }
-      // }
-      // if (!checkRadio){
-      //   msg = erreur.ville;
-      //   setErrorStyle(setError);
-      // }
-    }
-
+      }
   }
-  console.log(formData)
-  ////////////// CHECK USER INPUTS WHILE TYPING END//////////////
 
+  function verifyCity(){
+    let checkRadio = false;
 
-  /////////////CHECK USER INPUT AT SUBMISSION//////////////
-  form.onsubmit = (function(event){
-    event.preventDefault();
-
-    if( (REGEX_NAMES.test(inputs["first"]) === false) || (REGEX_NAMES.test(inputs["last"]) === false) || (REGEX_BDAY.test(inputs["birthdate"]) === false) || (REGEX_MAIL.test(inputs["email"]) === false) || (!inputs["quantity"])){
-      alert('veuillez tout verifier');
-    }
-    setError.input = inputs[6];
-    setError.data = formData[6];
-      if (inputs["checkbox1"].checked === false) {
-        msg = erreur.radio
-        // setError.input = inputs[6];
-        // setError.data = formData[6];
-        setErrorStyle(setError);
-      }
-      else{
-        // inputs["checkbox1"].style.border = "unset";
-        removeErrorStyle(setError);
-      }
-
-      for (let i = 0; i < inputs.length; i++) {
-        if (!inputs[i].value) {
-          inputs[i].style.border = "red 2px solid";
-          msg = erreur.empty
-          formData[i].setAttribute('data-error',msg)
-          formData[i].setAttribute('data-error-visible','true')
+    for (let i = 0; i < radios.length; i++){
+      if (checkRadio === false){
+        if (radios[i].checked === true) {
+          checkRadio = true;
+          formData[5].removeAttribute('data-error');
+          formData[5].removeAttribute('data-error-visible');
+          break;
         }
       }
-      if (msg){
-        console.log('test')
-        return false;
-      }
-      else {
-        formData.forEach((div) => div.removeAttribute('data-error'));
-        formData.forEach((div) => div.removeAttribute('data-error-visible'));
-      }
-      displaySucessModal()
-  })
+    }
+    //!checkradio -> checkradio=false
+    if (!checkRadio){
+      msg = erreur.ville;
+      formData[5].setAttribute('data-error',msg)
+      formData[5].setAttribute('data-error-visible','true')
+      return false
+      // event.preventDefault();
+    }
+  }
+
+  function verifiyConditions(){
+    if (inputs["checkbox1"].checked === false) {
+      msg = erreur.radio
+      formData[6].setAttribute('data-error',msg)
+      formData[6].setAttribute('data-error-visible','true')
+      return false
+    }
+    else{
+      formData[6].removeAttribute('data-error');
+      formData[6].removeAttribute('data-error-visible');
+    }
+  }
+
+function onSubmit(e){
+  e.preventDefault();
+  verifiyConditions();
+  let okFirstName = verifyFirstName();
+  let okLastName = verifyLastName();
+  let okEmail = verifyEmail();
+  let okQuantity = verifyQuantity();
+  let okBirthdate = verifyBirthdate();
+  let okConditions = verifiyConditions();
+
+  let formulaireValide = okFirstName &&
+  okLastName &&
+  okEmail &&
+  okQuantity &&
+  okBirthdate &&
+  okConditions;
+
+  if (formulaireValide === true){
+    alert('test')
+
+    displaySucessModal();
+  }
+}
+
 
 ///////////END CHECK USER INPUT////////////
 
