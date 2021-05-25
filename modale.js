@@ -15,8 +15,7 @@ function main(){
   const inputs = document.forms["reserve"];
 
   const REGEX_NAMES =/^[a-zîïéèêëì]+([-'\s][a-zîïéèêëì][a-zéèêëìîï]+)?$/i;
-  const REGEX_MAIL =/^[a-z][a-z0-9-_]+@[a-z]+.[a-z]+$/;
-  // ^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$
+  const REGEX_MAIL =/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
   const REGEX_BDAY = /^[1-2][0-9]{3}[-][0-9]{2}[-][0-9]{2}$/;
 
   //modal elements for the focus trap
@@ -43,16 +42,6 @@ function main(){
   btnGo.setAttribute('type','button');
   btnGo.style.transform= "translate(10px, 400px)";
   btnGo.addEventListener('click', sendForm)
-
-  ////////////// FORM ERROR SETTINGS //////////////
-  let msg;
-  const erreur = {
-    empty : "Veuillez renseigner ce champ.",
-    incorrect : "Veuillez renseigner correctement le champ.",
-    ville : "Veuillez choisir une ville.",
-    radio : "Veuillez accepter les conditions générales.",
-    test : "test",
-  };
 
   /////////MENU RESPONSIVE////////
   burger.onclick = function editNav() {
@@ -119,6 +108,17 @@ function main(){
     }
   })
   /////////////END FOCUS TRAP ////////////////
+
+
+  ////////////// FORM ERROR SETTINGS //////////////
+  let msg;
+  const erreur = {
+    empty : "Veuillez renseigner ce champ.",
+    incorrect : "Veuillez renseigner correctement le champ.",
+    ville : "Veuillez choisir une ville.",
+    radio : "Veuillez accepter les conditions générales.",
+    test : "test",
+    };
 
   ////////////// CHECK USER INPUTS WHILE TYPING //////////////
 
@@ -252,6 +252,7 @@ function main(){
             radios[a].disabled = false
           }
         }
+        verifyCity();
         return true
       }
   }
