@@ -32,7 +32,7 @@ function main(){
   successModal.style.display="none";
   successModal.style.position="absolute";
   successModal.style.top=0;
-  successModal.style.transform= "translate(0px, 200px)";
+  successModal.style.transform= "translate(40px, 200px)";
   successModal.innerHTML ="Merci pour votre participation !";
   modalContainer.appendChild(successModal);
 
@@ -252,29 +252,34 @@ function main(){
             radios[a].disabled = false
           }
         }
-        verifyCity();
+        return true
       }
   }
 
   function verifyCity(){
     let checkRadio = false;
-
-    for (let i = 0; i < radios.length; i++){
-      if (checkRadio === false){
-        if (radios[i].checked === true) {
-          checkRadio = true;
-          formData[5].removeAttribute('data-error');
-          formData[5].removeAttribute('data-error-visible');
-          break;
+    if(inputs["quantity"].value > 0){
+      for (let i = 0; i < radios.length; i++){
+        if (checkRadio === false){
+          if (radios[i].checked === true) {
+            checkRadio = true;
+            formData[5].removeAttribute('data-error');
+            formData[5].removeAttribute('data-error-visible');
+            return true
+          }
         }
       }
+      if (!checkRadio){
+        msg = erreur.ville;
+        formData[5].setAttribute('data-error',msg)
+        formData[5].setAttribute('data-error-visible','true')
+        return false
+      }
     }
-    if (!checkRadio){
-      msg = erreur.ville;
-      formData[5].setAttribute('data-error',msg)
-      formData[5].setAttribute('data-error-visible','true')
-      return false
+    else {
+      return true
     }
+
   }
 
   function verifiyConditions(){
@@ -300,15 +305,18 @@ function onSubmit(e){
   let okQuantity = verifyQuantity();
   let okBirthdate = verifyBirthdate();
   let okConditions = verifiyConditions();
+  let okCity = verifyCity();
+
 
   let formulaireValide = okFirstName &&
   okLastName &&
   okEmail &&
   okQuantity &&
   okBirthdate &&
-  okConditions;
-  // console.log(verifyFirstName()+" "+verifyLastName() +" "+verifyEmail()+" "+verifyQuantity()+" "+verifyBirthdate()+" "+verifiyConditions());
-console.log('test'+!inputs["quantity"].value)
+  okConditions&&
+  okCity;
+  console.log(verifyFirstName()+" "+verifyLastName() +" "+verifyEmail()+" "+verifyQuantity()+" "+verifyBirthdate()+" "+verifiyConditions()+" "+verifyCity());
+// console.log('test'+!inputs["quantity"].value)
   if (formulaireValide){
 
     displaySucessModal();
