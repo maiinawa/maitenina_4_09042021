@@ -316,7 +316,7 @@ function onSubmit(e){
   okBirthdate &&
   okConditions&&
   okCity;
-  console.log(verifyFirstName()+" "+verifyLastName() +" "+verifyEmail()+" "+verifyQuantity()+" "+verifyBirthdate()+" "+verifiyConditions()+" "+verifyCity());
+  
   if (formulaireValide){
 
     displaySucessModal();
