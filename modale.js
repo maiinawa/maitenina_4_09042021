@@ -317,7 +317,6 @@ function onSubmit(e){
   okConditions&&
   okCity;
   console.log(verifyFirstName()+" "+verifyLastName() +" "+verifyEmail()+" "+verifyQuantity()+" "+verifyBirthdate()+" "+verifiyConditions()+" "+verifyCity());
-// console.log('test'+!inputs["quantity"].value)
   if (formulaireValide){
 
     displaySucessModal();
