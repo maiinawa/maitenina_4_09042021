@@ -91,16 +91,18 @@ function main(){
   ///////// FIN MODAL ELEMENT////////
 
   ///////////// FOCUS TRAP //////////accessibility
-  //navigate through form with tab key (focustrap), enferme le focus tant que la modale est ouverte
+  //naviguer dans la modale avec tabkey (focustrap), enferme le focus tant que la modale est ouverte
   document.addEventListener('keydown', function(eventkey){
     if (eventkey.key === 'Tab') {
       if (eventkey.shiftKey){
-        if (document.activeElement === firstModalEl) {//quand la premiere valeur de la chaine est active, le focus est mis sur la derniere
+        //quand la premiere valeur de la chaine est active, le focus est mis sur la derniere
+        if (document.activeElement === firstModalEl) {
           lastModalEl.focus();
           eventkey.preventDefault();
         }
       } else /*if tab is pressed */{
-        if (document.activeElement === lastModalEl){ //quand la derniere valeur de la chaine est active, le focus est mis sur le premier element
+        //quand la derniere valeur de la chaine est active, le focus est mis sur le premier element
+        if (document.activeElement === lastModalEl){ 
           firstModalEl.focus();
           eventkey.preventDefault();
         }
