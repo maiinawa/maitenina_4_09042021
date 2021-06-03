@@ -22,10 +22,10 @@ function main(){
   const modalElts = document.querySelectorAll(".text-control, .checkbox-input, .checkbox-label, .checkbox2-label, .btn-submit")
   const firstModalEl = modalElts[0];
   const lastModalEl = modalElts[modalElts.length - 1];
-  
+  //////////////// END DOM Elements //////////////
 
   /////////////// STYLING DOM ELEMENTS //////////////
-  // sucess modal
+  // SUCCESS MSG
   successModal.classList.add('modal-body');
   successModal.setAttribute('id','sucessModal');
   successModal.style.display="none";
@@ -35,14 +35,14 @@ function main(){
   successModal.innerHTML ="Merci pour votre participation !";
   modalContainer.appendChild(successModal);
 
-  // sucess modal send form
+  // SUCCESS SEND FORM
   successModal.appendChild(btnGo);
   btnGo.innerHTML ='GO';
   btnGo.classList.add('btn-go');
   btnGo.setAttribute('type','button');
   btnGo.style.transform= "translate(10px, 400px)";
-  btnGo.addEventListener('click', sendForm)
-
+  /////////////// STYLING DOM ELEMENTS //////////////
+  
   /////////MENU RESPONSIVE////////
   burger.onclick = function editNav() {
     let topNav = document.getElementById("myTopnav");
@@ -52,9 +52,9 @@ function main(){
       topNav.className = "topnav";
     }
   }
-  /////FIN MENU RESPONSIVE////////
+  //////////END MENU RESPONSIVE/////////////
 
-  /////////MODAL ELEMENT////////
+  /////////////////MODAL ELEMENT/////////////
   // launch modal event
   modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 
@@ -62,6 +62,7 @@ function main(){
   function launchModal() {
     modalbg.style.display = "block";
   }
+  // show success message into modale
   function displaySucessModal(){
     successModal.style.display = "block";
     form.style.opacity=0;
@@ -88,7 +89,7 @@ function main(){
       eventkey.preventDefault();
     }
   })
-  ///////// FIN MODAL ELEMENT////////
+  /////////////// FIN MODAL ELEMENT//////////////
 
   ///////////// FOCUS TRAP //////////accessibility
   //naviguer dans la modale avec tabkey (focustrap), enferme le focus tant que la modale est ouverte
@@ -110,9 +111,10 @@ function main(){
     }
   })
   /////////////END FOCUS TRAP ////////////////
+  
 
-
-  ////////////// FORM ERROR SETTINGS //////////////
+  
+  ////////////// FORM ERROR MSG //////////////
   let msg;
   const erreur = {
     empty : "Veuillez renseigner ce champ.",
@@ -136,12 +138,10 @@ function main(){
   document.getElementById("location5").addEventListener('click', verifyCity)
   document.getElementById("location6").addEventListener('click', verifyCity)
 
-  form.onsubmit = onSubmit;
 
-  function sendForm(){
-    form.submit()
-  }
 
+  //each function for each input to check
+  
   function verifyFirstName(){
     if (!inputs["first"].value){
       msg = erreur.empty
@@ -282,7 +282,6 @@ function main(){
     else {
       return true
     }
-
   }
 
   function verifiyConditions(){
@@ -298,6 +297,9 @@ function main(){
       return true;
     }
   }
+  
+   //send form to validation
+  form.onsubmit = onSubmit;
 
 function onSubmit(e){
   e.preventDefault();
@@ -320,13 +322,18 @@ function onSubmit(e){
   okCity;
   
   if (formulaireValide){
-
     displaySucessModal();
   }
 }
-
-
 ///////////END CHECK USER INPUT////////////
+  
+////////// SEND FORM AFTER VALIDATION /////////
+    btnGo.addEventListener('click', sendForm)
+  
+    function sendForm(){
+    form.submit()
+  }
+//////////////END SEND FORM //////////////
 
 }
 main();
