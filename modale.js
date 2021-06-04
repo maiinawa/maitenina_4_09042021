@@ -137,6 +137,7 @@ function main(){
   document.getElementById("location4").addEventListener('click', verifyCity)
   document.getElementById("location5").addEventListener('click', verifyCity)
   document.getElementById("location6").addEventListener('click', verifyCity)
+  inputs["checkbox1"].addEventListener('click', verifiyConditions)
 
 
 
@@ -303,7 +304,7 @@ function main(){
 
 function onSubmit(e){
   e.preventDefault();
-  verifiyConditions();
+  // verifiyConditions();
   let okFirstName = verifyFirstName();
   let okLastName = verifyLastName();
   let okEmail = verifyEmail();
