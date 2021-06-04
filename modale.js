@@ -28,20 +28,19 @@ function main(){
   // SUCCESS MSG
   successModal.classList.add('modal-body');
   successModal.setAttribute('id','sucessModal');
-  successModal.style.display="none";
   successModal.style.position="absolute";
   successModal.style.top=0;
+  successModal.style.width="90%";
   successModal.style.transform= "translate(40px, 200px)";
   successModal.innerHTML ="Merci pour votre participation !";
-  modalContainer.appendChild(successModal);
 
-  // SUCCESS SEND FORM
-  successModal.appendChild(btnGo);
+
+  // BTN SEND FORM
   btnGo.innerHTML ='GO';
   btnGo.classList.add('btn-go');
   btnGo.setAttribute('type','button');
-  btnGo.style.transform= "translate(10px, 400px)";
-  /////////////// STYLING DOM ELEMENTS //////////////
+  btnGo.style.transform= "translate(-20px, 400px)";
+/////////////// STYLING DOM ELEMENTS //////////////
   
   /////////MENU RESPONSIVE////////
   burger.onclick = function editNav() {
@@ -64,7 +63,8 @@ function main(){
   }
   // show success message into modale
   function displaySucessModal(){
-    successModal.style.display = "block";
+    modalContainer.appendChild(successModal);
+    successModal.appendChild(btnGo);
     form.style.opacity=0;
   }
 
@@ -304,7 +304,6 @@ function main(){
 
 function onSubmit(e){
   e.preventDefault();
-  // verifiyConditions();
   let okFirstName = verifyFirstName();
   let okLastName = verifyLastName();
   let okEmail = verifyEmail();
